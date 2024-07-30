@@ -6,7 +6,7 @@ DESCRIPTION = "Image for BSP verification with QT and multimedia features"
 inherit populate_sdk_qt5
 
 #Prefix to the resulting deployable tarball name
-export IMAGE_BASENAME = "Reference-Multimedia-Image"
+export IMAGE_BASENAME = "sdux-mittch"
 
 IMAGE_FEATURES += " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'weston', \
