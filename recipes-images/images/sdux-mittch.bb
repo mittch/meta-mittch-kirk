@@ -59,7 +59,7 @@ IMAGE_INSTALL += " \
     packagegroup-wifi-fw-tdx-cli \
     udev-extraconf \
     ${CONMANPKGS} \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'timestamp-service systemd-analyze', '', d)} 
+    ${@bb.utils.contains('DISTRO_FEATURES', 'systemd', 'timestamp-service systemd-analyze', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', \
                          '${APP_LAUNCH_WAYLAND}', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'x11 wayland', \
