@@ -1,0 +1,14 @@
+Index: git/include/configs/colibri_imx6.h
+===================================================================
+--- git.orig/include/configs/colibri_imx6.h
++++ git/include/configs/colibri_imx6.h
+@@ -103,7 +103,8 @@
+ 		"source ${loadaddr}\0" \
+ 	"splashpos=m,m\0" \
+ 	"splashimage=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+-	"vidargs=fbmem=8M\0"
++	"vidargs=video=mxcfb0:dev=lcd,EDT-WVGA,if=RGB666 " \
++ 		"video=mxcfb1:off fbmem=8M\0 "
+ 
+ /* Miscellaneous configurable options */
+ #undef CONFIG_SYS_CBSIZE

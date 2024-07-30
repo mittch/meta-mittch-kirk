@@ -1,0 +1,54 @@
+Index: git/board/toradex/colibri_imx6/colibri_imx6.c
+===================================================================
+--- git.orig/board/toradex/colibri_imx6/colibri_imx6.c
++++ git/board/toradex/colibri_imx6/colibri_imx6.c
+@@ -235,8 +235,6 @@ iomux_v3_cfg_t const gpio_pads[] = {
+ 					  MUX_MODE_SION,
+ 	/* USBH_OC */
+ 	MX6_PAD_EIM_D30__GPIO3_IO30	| MUX_PAD_CTRL(WEAK_PULLUP),
+-	/* USBC_ID */
+-	MX6_PAD_NANDF_D2__GPIO2_IO02	| MUX_PAD_CTRL(WEAK_PULLUP),
+ 	/* USBC_DET */
+ 	MX6_PAD_GPIO_17__GPIO7_IO12	| MUX_PAD_CTRL(WEAK_PULLUP),
+ };
+@@ -377,6 +375,12 @@ static iomux_v3_cfg_t const pwr_intb_pad
+ 	MX6_PAD_GPIO_18__GPIO7_IO13 | MUX_PAD_CTRL(NO_PAD_CTRL)
+ };
+ 
++static iomux_v3_cfg_t const beeper_pads[] = {
++	/* beeper - was  USBC_ID */
++	MX6_PAD_NANDF_D2__GPIO2_IO02	| MUX_PAD_CTRL(WEAK_PULLDOWN),
++#define BEEPER_PIN IMX_GPIO_NR(2, 2)
++};
++
+ #if defined(CONFIG_VIDEO_IPUV3)
+ 
+ static iomux_v3_cfg_t const backlight_pads[] = {
+@@ -415,6 +419,7 @@ static iomux_v3_cfg_t const rgb_pads[] =
+ 	MX6_PAD_DISP0_DAT17__IPU1_DISP0_DATA17 | MUX_PAD_CTRL(OUTPUT_RGB),
+ };
+ 
++
+ static void do_enable_hdmi(struct display_info_t const *dev)
+ {
+ 	imx_enable_hdmi_phy();
+@@ -567,6 +572,11 @@ void board_preboot_os(void)
+ 
+ int board_early_init_f(void)
+ {
++	// silence beeper:
++	imx_iomux_v3_setup_multiple_pads(beeper_pads,
++					 ARRAY_SIZE(beeper_pads));
++        gpio_direction_output(BEEPER_PIN, 0);
++
+ 	imx_iomux_v3_setup_multiple_pads(pwr_intb_pads,
+ 					 ARRAY_SIZE(pwr_intb_pads));
+ 	setup_iomux_uart();
+@@ -681,6 +691,7 @@ int misc_init_r(void)
+ #ifdef CONFIG_CMD_BMODE
+ 	add_board_boot_modes(board_boot_modes);
+ #endif
++
+ 	return 0;
+ }
+ 
