@@ -1,0 +1,79 @@
+diff --git a/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts b/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
+index 7272edd85a49..941f186817e1 100644
+--- a/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
++++ b/arch/arm/boot/dts/imx6dl-colibri-eval-v3.dts
+@@ -61,5 +61,29 @@ mcp251x0: mcp251x@0 {
+ &i2c3 {
+ 	status = "okay";
+ 
++	/* SDU-X touchscreen */
++	hy46xx: hy46xx@38 {
++		compatible = "hycon,hy4633","hy46xx_ts";
++		reg = <0x38>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_ts_hy46xx>;
++		interrupt-parent = <&gpio2>;
++		interrupts = <24 IRQ_TYPE_EDGE_FALLING>;
++
++		reset-gpios = <&gpio1 0 GPIO_ACTIVE_LOW>;
++
++		wake-gpios = <&gpio1 14 GPIO_ACTIVE_LOW>;
++		wakeup-source;
++
++		touchscreen-size-x = <800>;
++		touchscreen-size-y = <480>;
++
++		touchscreen-x-mm = <153>;
++		touchscreen-y-mm =  <86>;
++
++		touchscreen-swapped-x-y;
++
++		status = "okay";
++	};
+  touchscreen-x-mm:
+    description: horizontal length in mm of the touchscreen
+
+  touchscreen-y-mm:
+    description: vertical length in mm of the touchscreen
++
+ 	/* M41T0M6 real time clock on carrier board */
+ 	rtc_i2c: rtc@68 {
+ 		compatible = "st,m41t0";
+diff --git a/arch/arm/boot/dts/imx6qdl-colibri.dtsi b/arch/arm/boot/dts/imx6qdl-colibri.dtsi
+index 023e76215064..c4e3d7ddcfc6 100644
+--- a/arch/arm/boot/dts/imx6qdl-colibri.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-colibri.dtsi
+@@ -1150,14 +1150,14 @@ MX6QDL_PAD_EIM_CS0__EIM_CS0_B	0xb0b1
+ 	pinctrl_weim_cs1: weimcs1grp {
+ 		fsl,pins = <
+ 			/* nEXT_CS1 */
+-			MX6QDL_PAD_EIM_CS1__EIM_CS1_B	0xb0b1
++			// MX6QDL_PAD_EIM_CS1__EIM_CS1_B	0xb0b1
+ 		>;
+ 	};
+ 
+ 	pinctrl_weim_cs2: weimcs2grp {
+ 		fsl,pins = <
+ 			/* nEXT_CS2 */
+-			MX6QDL_PAD_SD2_DAT1__EIM_CS2_B	0xb0b1
++			// MX6QDL_PAD_SD2_DAT1__EIM_CS2_B	0xb0b1
+ 		>;
+ 	};
+ 
+@@ -1230,6 +1230,16 @@ MX6QDL_PAD_EIM_WAIT__GPIO5_IO00		0x1b0b0
+ 		>;
+ 	};
+ 
++	/* SDU-X hycon touchscreen */
++	pinctrl_ts_hy46xx: hoggrp-ts-hy46xx { /* HY46xx ts chip */
++		fsl,pins = <
++			/* WAKE */
++			MX6QDL_PAD_SD2_DAT1__GPIO1_IO14	0x130b0  /* SODIMM 106 */
++			/* INT */
++			MX6QDL_PAD_EIM_CS1__GPIO2_IO24	0x130b0  /* SODIMM 107 */
++		>;
++	};
++
+ 	/* ADDRESS[16] DATA[30] used as GPIO */
+ 	pinctrl_weim_gpio_6: weimgpio6grp {
+ 		fsl,pins = <

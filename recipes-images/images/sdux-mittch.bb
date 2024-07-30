@@ -84,3 +84,21 @@ IMAGE_INSTALL += " \
     gpicview \
     media-files \
 "
+
+ROOTFS_POSTPROCESS_COMMAND += 'modify_filesystem; '
+
+modify_filesystem() {
+    echo "MODIFYING FS"
+
+    #
+    #	 load TS driver:
+    #
+    echo "hy46xx_ts" > ${IMAGE_ROOTFS}${sysconfdir}/modules-load.d/hy46xx_ts.conf
+    #
+    # imx-sdma driver:
+    #
+    echo "imx-sdma" > ${IMAGE_ROOTFS}${sysconfdir}/modules-load.d/imx-sdma.conf
+
+    # default timezone
+    ln -sf ${IMAGE_ROOTFS}/usr/share/zoneinfo/Europe/Berlin ${IMAGE_ROOTFS}/etc/localtime
+}
